@@ -36,6 +36,16 @@ defmodule Agents do
     Agent.update(bucket, &List.delete(&1, element))
   end
 
+  @doc """
+  Runs an `operation` over all the `bucket`
+  """
+  def map(bucket, operation) do
+    Agent.update(bucket, &operation.(&1))
+  end
+
+  @doc """
+  Returns de current `size` of the `bucket`
+  """
   def size(bucket) do
     Agent.get(bucket, &Enum.count(&1))
   end

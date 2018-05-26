@@ -44,11 +44,19 @@ defmodule Queue do
     Map.replace!(agent, "available", false)
     |> (&Agents.put(:agents, &1)).()
 
-    Agents.put(:assigned_jobs,
+    create_or_update_assigned_jobs(
     %{
         "job_id" => job["id"],
         "agent_id" => agent["id"],
         "created_at" => DateTime.utc_now()
       })
+  end
+
+  def create_or_update_assigned_jobs(%{} = job_assignment) do
+    with nil <- Process.whereis(:assigned_jobs) do
+      Agents.start_link(:assigned_jobs, [job_assignment])
+    else
+      _ -> Agents.put(:assigned_jobs, job_assignment)
+    end
   end
 end

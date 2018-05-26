@@ -1,18 +1,14 @@
 defmodule PrepareQueue do
 
-  def order_jobs_by_priority_and_created_at(queue) do
-    ordered_jobs =
-      queue["jobs"]
-      |> Enum.sort(&sort_rules/2)
+  def order_jobs_and_set_agents_available(jobRequests) do
 
-    agents_availability =
-      queue["agents"]
-      |> set_agents_available(queue["jobRequests"])
+    Agents.map(:jobs, fn jobs -> Enum.sort(jobs, &sort_by_urgency_and_creation/2) end)
 
-    %{"agents" => agents_availability, "jobs" => ordered_jobs}
+    Agents.map(:agents, fn agents -> set_agents_available(agents, jobRequests) end)
+
   end
 
-  def sort_rules(job_1, job_2) do
+  def sort_by_urgency_and_creation(job_1, job_2) do
     cond do
       job_1["urgent"] && job_2["urgent"] ->
         job_1["created_at"] < job_2["created_at"]
@@ -37,23 +33,6 @@ defmodule PrepareQueue do
       Map.replace!(agent, "available", true)
     else
       false -> agent
-    end
-  end
-
-  def create_or_update_queue(%{"agents" => agents, "jobs" => jobs}) do
-    case Process.whereis(:agents) do
-      nil -> Agents.start_link(:agents, agents)
-      _ -> Enum.map(agents, fn agent -> Agents.put(:agents, agent) end)
-    end
-
-    case Process.whereis(:jobs) do
-      nil -> Agents.start_link(:jobs, jobs)
-      _ -> Enum.map(jobs, fn job -> Agents.put(:jobs, job) end)
-    end
-
-    case Process.whereis(:job_assigned) do
-      nil -> Agents.start_link(:assigned_jobs, [])
-      _ -> nil
     end
   end
 end

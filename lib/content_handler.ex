@@ -17,8 +17,6 @@ defmodule ContentHandler do
     agent = Map.put(agent, "created_at", DateTime.utc_now())
             |> Map.put("available", nil)
 
-    IO.inspect element_already_exists?(agent, "agent_id")
-
     acc
     |> Map.update!("agents", &(&1 ++ [agent]))
   end
@@ -35,17 +33,6 @@ defmodule ContentHandler do
 
     acc
     |> Map.update!("jobRequests", &(&1 ++ [jobRequest]))
-  end
-
-  defp element_already_exists?(element, id_field) do
-   with nil <- Process.whereis(:agents) do
-    false
-   else
-    _pid -> Agents.get(:assigned_jobs)
-            |> Enum.map(&Map.fetch!(&1, id_field))
-            |> Enum.member?(element["id"])
-
-   end
   end
 
 end
