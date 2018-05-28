@@ -8,21 +8,29 @@ defmodule Queue do
   def dequeue_job(job) do
     Agents.get(:agents)
     |> Enum.map(fn agent -> assign_if_elegible(agent, job) end)
+    |> Enum.map(&assign_if_has_second_skill/1)
     |> Enum.filter(& !is_nil(&1))
   end
 
   def assign_if_elegible(agent, job) do
-    cond do
-      agent_is_available?(agent) && agent_has_skill?(agent, job) -> assign_job_to_agent(agent, job)
-      true -> assign_if_has_second_skill(agent, job)
+    with true <- agent_is_available?(agent) && agent_has_skill?(agent, job) do
+      assign_job_to_agent(agent, job)
+      {true, agent, job}
+    else
+      false -> {false, agent, job}
     end
   end
 
-  def assign_if_has_second_skill(agent, job) do
-    cond do
-      agent_is_available?(agent) && agent_has_second_skill?(agent, job) -> assign_job_to_agent(agent, job)
-      true -> nil
+  def assign_if_has_second_skill({true, agent, job}) do
+    with true <- agent_is_available?(agent) && agent_has_second_skill?(agent, job) do
+       assign_job_to_agent(agent, job)
+    else
+      false -> nil
     end
+  end
+
+  def assign_if_has_second_skill({false, _, _}) do
+    nil
   end
 
   def agent_has_skill?(agent, job) do
@@ -47,8 +55,7 @@ defmodule Queue do
     create_or_update_assigned_jobs(
     %{
         "job_id" => job["id"],
-        "agent_id" => agent["id"],
-        "created_at" => DateTime.utc_now()
+        "agent_id" => agent["id"]
       })
   end
 

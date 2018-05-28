@@ -28,6 +28,7 @@ defmodule CreateOrUpdateQueue do
 
   defp element_id_already_exists?(element, agent_id) do
     Agents.get(agent_id)
+    |> Enum.map(&Map.fetch!(&1, "id"))
     |> Enum.member?(element["id"])
    end
 end
