@@ -23,10 +23,17 @@ defmodule Agents do
   end
 
   @doc """
-  Puts the `element` in the `bucket`.
+  Puts the `element` in the `bucket` at first position.
   """
   def put(bucket, element) do
-    Agent.update(bucket, &List.insert_at(&1, 0, element))
+    Agent.update(bucket, &[element | &1])
+  end
+
+  @doc """
+  Puts the `element` in the `bucket` at last position.
+  """
+  def put_last(bucket, element) do
+    Agent.update(bucket, &(&1 ++ [element]))
   end
 
   @doc """

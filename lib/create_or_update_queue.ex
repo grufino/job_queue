@@ -1,9 +1,17 @@
 defmodule CreateOrUpdateQueue do
-  def create_or_update_queue(content) do
-    create_or_update_agent(content["jobs"], :jobs)
-    create_or_update_agent(content["agents"], :agents)
+  def create_or_update_queue(%{"jobs" => jobs, "agents" => agents, "jobRequests" => jobRequests}) do
+    insert_agents(agents)
+    insert_jobs(jobs)
 
-    content["jobRequests"]
+    jobRequests
+  end
+
+  def insert_jobs(jobs) do
+    create_or_update_agent(jobs, :jobs)
+  end
+
+  def insert_agents(agents) do
+    create_or_update_agent(agents, :agents)
   end
 
   def create_or_update_agent(list, agent_id) do

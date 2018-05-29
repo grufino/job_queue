@@ -63,7 +63,7 @@ defmodule Queue do
     with nil <- Process.whereis(:assigned_jobs) do
       Agents.start_link(:assigned_jobs, [job_assignment])
     else
-      _ -> Agents.put(:assigned_jobs, job_assignment)
+      _ -> Agents.put_last(:assigned_jobs, job_assignment)
     end
   end
 end
