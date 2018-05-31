@@ -1,9 +1,9 @@
-defmodule FILE_QUEUE.MixProject do
+defmodule JobQueue.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :file_queue,
+      app: :job_queue,
       version: "0.1.0",
       elixir: "~> 1.6",
       start_permanent: Mix.env() == :prod,

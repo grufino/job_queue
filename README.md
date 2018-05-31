@@ -1,6 +1,6 @@
-# FILE_QUEUE
+# JOB_QUEUE
 
-Simple queue to get "jobs" executed and generate assigned_jobs based on "agents", which are marked available via job requests when they are ready to get a new job.
+Simple queue to get "jobs" executed and generate assigned jobs based on "agents", which are marked available via job requests when they are ready to get a new job.
 
 ## Installation
 
@@ -10,7 +10,7 @@ Simple queue to get "jobs" executed and generate assigned_jobs based on "agents"
 
 ## Architectural choices and Project Overview
 
-- Please don't confuse Agent, elixir library for holding state with the entity Agent asked by the problem, they are different things and I talk about both in here.
+- Please don't confuse Agent, elixir library for holding state with the entity Agent introduced by the problem, they are different things and I talk about both in here.
 
 - As a Queue, I think the most important decision of the project was how to control State, and Elixir provides great tools for that, which are called GenServer (general servers), this solution used Agent, which is a built-in library based on GenServer, it means that it doesn't do everything a GenServer can do, but it abstracts all the most common tasks, which is just what we needed here. 
 
