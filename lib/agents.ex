@@ -44,9 +44,9 @@ defmodule Agents do
   end
 
   @doc """
-  Runs an `operation` over all the `bucket`
+  Runs a `function` on the `bucket`
   """
-  def map(bucket, operation) do
+  def execute(bucket, operation) do
     Agent.update(bucket, &operation.(&1))
   end
 

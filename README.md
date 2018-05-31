@@ -1,21 +1,10 @@
 # FILE_QUEUE
 
-**TODO: Add description**
+Simple queue to get "jobs" executed and generate assigned_jobs based on "agents", which are marked available via job requests when they are ready to get a new job.
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `file_queue` to your list of dependencies in `mix.exs`:
+- For being able to run Elixir programs, you need to have Erlang/OTP installed, which is the Erlang's virtual machine, as Elixir runs on top of it, and then install Elixir from your favorite package manager (on unix-like environments), eg. on MacOs High Sierra the command "brew install elixir" installs the whole stack (with Erlang/OTP if you don't have it yet).
 
-```elixir
-def deps do
-  [
-    {:file_queue, "~> 0.1.0"}
-  ]
-end
-```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/file_queue](https://hexdocs.pm/file_queue).
+- For the project set up all you need it is to run 
 

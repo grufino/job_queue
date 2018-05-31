@@ -1,6 +1,6 @@
 defmodule ProcessJobRequest do
   def process(jobRequest) do
-    Agents.map(:agents, fn agents -> set_agents_available(agents, jobRequest) end)
+    Agents.execute(:agents, fn agents -> set_agents_available(agents, jobRequest) end)
   end
 
   def set_agents_available(agents, job_requests) do

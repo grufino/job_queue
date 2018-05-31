@@ -1,7 +1,7 @@
 defmodule OrderJobs do
 
   def order_jobs(jobRequests) do
-    Agents.map(:jobs, fn jobs -> Enum.sort(jobs, &sort_by_urgency_and_creation/2) end)
+    Agents.execute(:jobs, fn jobs -> Enum.sort(jobs, &sort_by_urgency_and_creation/2) end)
 
     jobRequests
   end
