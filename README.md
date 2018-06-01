@@ -20,8 +20,29 @@ Simple queue to get "jobs" executed and generate assigned jobs based on "agents"
 
 - For being able to run Elixir programs, you need to have Erlang/OTP installed, which is the Erlang's virtual machine, as Elixir runs on top of it, and then install Elixir from your favorite package manager (on unix-like environments), eg. on MacOs High Sierra the command "brew install elixir" installs the whole stack (with Erlang/OTP if you don't have it yet).
 
-- For the project set up all you need it is to run `mix deps.get` and then `iex -S mix` to activate Elixir's project CLI where you can run any public function of the project.
+- For the project set up all you need is to clone project from github: `git clone https://bitbucket.org/grufino/job_queue/` and then run `mix deps.get` at the project's root to download the project's dependencies.
 
 ## Execution
 
-- After installing and compiling the project with the commands above, it is possible to run the given input file(s) by QueueProcessor module
+- After installing, it is possible to run the given input file(s) by QueueProcessor module via Elixir CLI:
+`job_queue git:(master) iex -S mix`
+`Erlang/OTP 20 [erts-9.2.1] [source] [64-bit] [smp:4:4] [ds:4:4:10] [async-threads:10] [hipe] [kernel-poll:false] [dtrace]`
+
+`Interactive Elixir (1.6.1) - press Ctrl+C to exit (type h() ENTER for help)`
+`iex(1)> QueueProcessor.process_queue()`
+
+`14:26:05.867 [info]  Starting dequeue with no jobs assigned`
+
+`14:26:05.867 [info]  job c0033410-981c-428a-954a-35dec05ef1d2 assigned to agent 8ab86c18-3fae-4804-bfd9-c3d6e8f66260`
+
+`14:26:05.867 [info]  job f26e890b-df8e-422e-a39c-7762aa0bac36 assigned to agent ed0e23ef-6c2b-430c-9b90-cd4f1ff74c88`
+`[`
+`  %{`
+`    "agent_id" => "8ab86c18-3fae-4804-bfd9-c3d6e8f66260",`
+`    "job_id" => "c0033410-981c-428a-954a-35dec05ef1d2"`
+`  },`
+`  %{`
+`    "agent_id" => "ed0e23ef-6c2b-430c-9b90-cd4f1ff74c88",`
+`    "job_id" => "f26e890b-df8e-422e-a39c-7762aa0bac36"`
+`  }`
+`]`
