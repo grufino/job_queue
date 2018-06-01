@@ -67,8 +67,6 @@ defmodule QueueProcessorTest do
       }
     ]
 
-
-
     assert expectedResult = QueueProcessor.process_queue()
   end
 end

@@ -2,6 +2,12 @@ defmodule Queue do
   require Logger
 
   def dequeue() do
+    case Process.whereis(:assigned_jobs) do
+      nil -> Agents.start_link(:assigned_jobs, [])
+              Logger.info("Starting dequeue with no jobs assigned")
+      _ -> Logger.info("Starting dequeue with jobs assigned #{inspect(Agents.get(:assigned_jobs))}")
+    end
+
     Enum.map(Agents.get(:jobs), fn job -> dequeue_job(job) end)
   end
 
@@ -9,15 +15,14 @@ defmodule Queue do
     Agents.get(:agents)
     |> Enum.map(fn agent -> assign_if_elegible(agent, job) end)
     |> Enum.map(&assign_if_has_second_skill/1)
-    |> Enum.filter(& !is_nil(&1))
   end
 
   def assign_if_elegible(agent, job) do
     with true <- agent_is_available?(agent) && agent_has_skill?(agent, job) do
       assign_job_to_agent(agent, job)
-      {true, agent, job}
+      {false, agent, job}
     else
-      false -> {false, agent, job}
+      false -> {true, agent, job}
     end
   end
 
@@ -57,6 +62,8 @@ defmodule Queue do
         "job_id" => job["id"],
         "agent_id" => agent["id"]
       })
+
+    Logger.info("job #{job["id"]} assigned to agent #{agent["id"]}")
   end
 
   def create_or_update_assigned_jobs(%{} = job_assignment) do

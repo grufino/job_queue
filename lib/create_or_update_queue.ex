@@ -10,12 +10,27 @@ defmodule CreateOrUpdateQueue do
     jobs
     |> Enum.map(fn job -> Map.put(job, "created_at", DateTime.utc_now()) end)
     |> create_or_update_agent(:jobs)
+
+    Agents.execute(:jobs, fn jobs -> Enum.sort(jobs, &sort_by_urgency_and_creation/2) end)
   end
 
   def insert_jobs(jobs) when is_map(jobs) do
     jobs =
     Map.put(jobs, "created_at", DateTime.utc_now())
     create_or_update_agent([jobs], :jobs)
+
+    Agents.execute(:jobs, fn jobs -> Enum.sort(jobs, &sort_by_urgency_and_creation/2) end)
+  end
+
+  def sort_by_urgency_and_creation(job_1, job_2) do
+    cond do
+      job_1["urgent"] && job_2["urgent"] ->
+        job_1["created_at"] < job_2["created_at"]
+      !job_1["urgent"] && !job_2["urgent"] ->
+        job_1["created_at"] < job_2["created_at"]
+      job_1["urgent"] -> true
+      true -> false
+    end
   end
 
   def insert_agents(agents) when is_list(agents) do

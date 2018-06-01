@@ -5,6 +5,16 @@ defmodule CreateOrUpdateQueueTest do
     Map.drop(job_input, keys_to_ignore) == job_expected
   end
 
+  @doc """
+    - You can assume the list of jobs passed 
+    in is ordered by the time the they 
+    have entered the system.
+
+    In the first 4 tests it is possible to see how jobs are ordered
+    when enters the program, but agents doesn't, this ordering is
+    done everytime a new job or job list arrives.
+  """
+
   test "create jobs unitarily test" do
 
     job_1 = %{
@@ -24,10 +34,10 @@ defmodule CreateOrUpdateQueueTest do
     CreateOrUpdateQueue.insert_jobs(job_2)
 
     assert true == Agents.take(:jobs)
-                  |> expected_map_pattern?(job_2, ["created_at"])
+                  |> expected_map_pattern?(job_1, ["created_at"])
 
     assert true == Agents.take(:jobs)
-                  |> expected_map_pattern?(job_1, ["created_at"])
+                  |> expected_map_pattern?(job_2, ["created_at"])
     end
 
     test "create jobs array test" do
@@ -49,10 +59,10 @@ defmodule CreateOrUpdateQueueTest do
       CreateOrUpdateQueue.insert_jobs(job_list)
 
       assert true == Agents.take(:jobs)
-                    |> expected_map_pattern?(job_2, ["created_at"])
+                    |> expected_map_pattern?(job_1, ["created_at"])
 
       assert true == Agents.take(:jobs)
-                    |> expected_map_pattern?(job_1, ["created_at"])
+                    |> expected_map_pattern?(job_2, ["created_at"])
       end
 
       test "create agents unitarily test" do
