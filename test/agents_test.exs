@@ -52,4 +52,16 @@ defmodule AgentsTest do
     assert Agents.take(:test_agent_6) == 4
     assert Agents.get(:test_agent_6) == []
   end
+
+  test "get by id" do
+    Agents.start_link(:test_agent_7, [])
+    Agents.put(:test_agent_7, %{"id" => 1, "skill" => "blow_bricks"})
+    assert Agents.get_by_id(:test_agent_7, 1) == %{"id" => 1, "skill" => "blow_bricks"}
+  end
+
+  test "id exists in bucket" do
+    Agents.start_link(:test_agent_8, [])
+    Agents.put(:test_agent_8, %{"id" => 1, "skill" => "blow_bricks"})
+    assert Agents.id_exists?(:test_agent_8, 1) == true
+  end
 end

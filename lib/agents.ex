@@ -56,4 +56,18 @@ defmodule Agents do
   def size(bucket) do
     Agent.get(bucket, &Enum.count(&1))
   end
+
+  @doc """
+  Returns one element by it's id
+  """
+  def get_by_id(bucket, id) do
+    Agent.get(bucket, &Enum.filter(&1, fn element -> element["id"] == id end) |> List.first())
+  end
+
+  @doc """
+  Returns true if the id exists inside the bucket and false if not
+  """
+  def id_exists?(bucket, id) do
+    Agent.get(bucket, &Enum.map(&1, fn element -> element["id"] end) |> Enum.member?(id))
+  end
 end

@@ -13,12 +13,13 @@ defmodule Queue do
 
   def dequeue_job(job) do
     Agents.get(:agents)
+    |> Enum.filter(&agent_is_available?/1)
     |> Enum.map(fn agent -> assign_if_elegible(agent, job) end)
     |> Enum.map(&assign_if_has_second_skill/1)
   end
 
   def assign_if_elegible(agent, job) do
-    with true <- agent_is_available?(agent) && agent_has_skill?(agent, job) do
+    with true <- agent_has_skill?(agent, job) && Agents.id_exists?(:jobs, job["id"]) do
       assign_job_to_agent(agent, job)
       {false, agent, job}
     else
@@ -27,7 +28,7 @@ defmodule Queue do
   end
 
   def assign_if_has_second_skill({true, agent, job}) do
-    with true <- agent_is_available?(agent) && agent_has_second_skill?(agent, job) do
+    with true <- agent_has_second_skill?(agent, job) && Agents.id_exists?(:jobs, job["id"]) do
        assign_job_to_agent(agent, job)
     else
       false -> nil

@@ -2,12 +2,6 @@
 
 Simple queue to get "jobs" executed and generate assigned jobs based on "agents", which are marked available via job requests when they are ready to get a new job.
 
-## Installation
-
-- For being able to run Elixir programs, you need to have Erlang/OTP installed, which is the Erlang's virtual machine, as Elixir runs on top of it, and then install Elixir from your favorite package manager (on unix-like environments), eg. on MacOs High Sierra the command "brew install elixir" installs the whole stack (with Erlang/OTP if you don't have it yet).
-
-- For the project set up all you need it is to run `mix deps.get` and then `iex -S mix` to activate Elixir's project CLI where you can run any public function of the project.
-
 ## Architectural choices and Project Overview
 
 - Please don't confuse Agent, elixir library for holding state with the entity Agent introduced by the problem, they are different things and I talk about both in here.
@@ -21,3 +15,13 @@ Simple queue to get "jobs" executed and generate assigned jobs based on "agents"
 - An Agent (state holder) was created for assigned jobs also just to keep history, but it would be nice to have it elsewhere if the project was to receive lots of data traffic.
 
 - The Agent abstraction was built the most generalistic way possible to support all types of operations on lists (some still even unused), but it is very flexible because of this.
+
+## Installation
+
+- For being able to run Elixir programs, you need to have Erlang/OTP installed, which is the Erlang's virtual machine, as Elixir runs on top of it, and then install Elixir from your favorite package manager (on unix-like environments), eg. on MacOs High Sierra the command "brew install elixir" installs the whole stack (with Erlang/OTP if you don't have it yet).
+
+- For the project set up all you need it is to run `mix deps.get` and then `iex -S mix` to activate Elixir's project CLI where you can run any public function of the project.
+
+## Execution
+
+- After installing and compiling the project with the commands above, it is possible to run the given input file(s) by QueueProcessor module

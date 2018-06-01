@@ -181,4 +181,46 @@ defmodule QueueTest do
 
         assert [%{"agent_id" => "8ab86c18-3fae-4804-bfd9-c3d6e8f66260", "job_id" => "c0033410-981c-428a-954a-35dec05ef1d2"}] == Agents.get(:assigned_jobs)
     end
+
+    test "same job can't go to two agents" do
+        agent_1 = %{
+            "id" => "999",
+            "name" => "BoJack Horseman",
+            "primary_skillset" => ["bills-questions"],
+            "secondary_skillset" => ["blow-stones"]
+        }
+
+        agent_2 = %{
+            "id" => "888",
+            "name" => "BoJack Horseman",
+            "primary_skillset" => ["bills-questions"],
+            "secondary_skillset" => ["blow-stones"]
+        }
+
+        job = %{
+            "id" => "123",
+            "type" => "bills-questions",
+            "urgent" => false
+          }
+        CreateOrUpdateQueue.insert_agents(agent_1)
+
+        CreateOrUpdateQueue.insert_agents(agent_2)
+
+        CreateOrUpdateQueue.insert_jobs(job)
+
+        job_request_1 = %{
+            "agent_id" => "999"
+          }
+
+        job_request_2 = %{
+          "agent_id" => "888"
+        }
+        ProcessJobRequest.process(job_request_1)
+
+        ProcessJobRequest.process(job_request_2)
+
+        Queue.dequeue()
+
+        assert [%{"agent_id" => "888", "job_id" => "123"}] == Agents.get(:assigned_jobs)
+    end
 end
