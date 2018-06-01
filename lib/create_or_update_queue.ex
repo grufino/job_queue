@@ -20,13 +20,13 @@ defmodule CreateOrUpdateQueue do
 
   def insert_agents(agents) when is_list(agents) do
     agents
-    |> Enum.map(fn agent -> Map.put(agent, "available", nil) end)
+    |> Enum.map(fn agent -> Map.put(agent, "available", false) end)
     |> create_or_update_agent(:agents)
   end
 
   def insert_agents(agents) when is_map(agents) do
     agents =
-      Map.put(agents, "available", nil)
+      Map.put(agents, "available", false)
     create_or_update_agent([agents], :agents)
   end
 
@@ -51,15 +51,9 @@ defmodule CreateOrUpdateQueue do
 
   defp put_if_not_exists(false, agent_id, element), do: Agents.put(agent_id, element)
 
-  defp element_id_already_exists?(element, agent_list) when is_list(agent_list) do
+  def element_id_already_exists?(element, agent_list) when is_list(agent_list) do
     agent_list
     |> Enum.map(&Map.fetch!(&1, "id"))
     |> Enum.member?(element["id"])
-  end
-
-  defp element_id_already_exists?(element, agent_list) when is_map(agent_list) do
-    agent_list
-    |> Map.fetch!("id")
-    |> fn agent -> agent == element end.()
   end
 end

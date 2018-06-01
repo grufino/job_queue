@@ -109,4 +109,26 @@ defmodule CreateOrUpdateQueueTest do
           assert true == Agents.take(:agents)
                       |> expected_map_pattern?(agent_1, ["available"])
       end
+
+      test "create custom agent" do
+        CreateOrUpdateQueue.create_or_update_agent([%{"id" => 1},%{"id" => 2},%{"id" => 3}], :custom_agent)
+
+        assert Agents.get(:custom_agent) == [%{"id" => 1},%{"id" => 2},%{"id" => 3}]
+      end
+
+      test "update custom agent" do
+        CreateOrUpdateQueue.create_or_update_agent([%{"id" => 1},%{"id" => 2},%{"id" => 3}, %{"id" => 4}], :custom_agent)
+
+        assert Agents.get(:custom_agent) == [%{"id" => 1},%{"id" => 2},%{"id" => 3}, %{"id" => 4}]
+      end
+
+      test "element id already exists in list" do
+        assert true ==
+          CreateOrUpdateQueue.element_id_already_exists?(%{"id" => 1}, [%{"id" => 1},%{"id" => 2},%{"id" => 3}])
+      end
+
+      test "element id doesnt exist in list" do
+        assert false == 
+          CreateOrUpdateQueue.element_id_already_exists?(%{"id" => 10}, [%{"id" => 1},%{"id" => 2},%{"id" => 3}])
+      end
 end

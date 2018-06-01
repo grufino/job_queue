@@ -1,4 +1,4 @@
-defmodule ContentHandler do
+defmodule ListContent do
 
   def list(content) do
     content_map = %{"agents" => [],

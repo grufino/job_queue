@@ -20,6 +20,6 @@ erl_crash.dump
 *.ez
 
 # Ignore package tarball (built via "mix hex.build").
-file_queue-*.tar
+job_queue-*.tar
 
 /.elixir_ls/

@@ -1,4 +1,4 @@
-defmodule ContentHandlerTest do
+defmodule ListContentTest do
   use ExUnit.Case
 
   test "reads input agent" do
@@ -26,7 +26,7 @@ defmodule ContentHandlerTest do
       "jobs" => []
     }
 
-    assert expected_output == ContentHandler.list(content)
+    assert expected_output == ListContent.list(content)
   end
 
   test "reads input job" do
@@ -52,7 +52,7 @@ defmodule ContentHandlerTest do
       "jobRequests" => []
     }
 
-    assert expected_output == ContentHandler.list(content)
+    assert expected_output == ListContent.list(content)
   end
 
   test "reads input jobRequest" do
@@ -75,7 +75,7 @@ defmodule ContentHandlerTest do
       "jobs" => []
     }
 
-    assert expected_output == ContentHandler.list(content)
+    assert expected_output == ListContent.list(content)
   end
 
   test "reads input one of each" do
@@ -126,6 +126,21 @@ defmodule ContentHandlerTest do
       }
     ]
 
-     assert ContentHandler.list(input) == expected_output
+     assert ListContent.list(input) == expected_output
+  end
+
+  test "list agent" do
+    assert %{"agents" => ["gabriel"]} ==
+         ListContent.list_agent(%{"new_agent" => "gabriel"}, %{"agents" => []})
+ end
+
+ test "list job" do
+     assert %{"jobs" => ["gabriel"]} ==
+          ListContent.list_agent(%{"new_job" => "gabriel"}, %{"jobs" => []})
+  end
+
+  test "list job request" do
+     assert %{"jobRequests" => ["gabriel"]} ==
+          ListContent.list_agent(%{"job_request" => "gabriel"}, %{"jobRequests" => []})
   end
 end

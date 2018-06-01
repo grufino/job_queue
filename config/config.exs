@@ -10,11 +10,11 @@ use Mix.Config
 
 # You can configure your application as:
 #
-#     config :file_queue, key: :value
+#     config :job_queue, key: :value
 #
 # and access this configuration in your application as:
 #
-#     Application.get_env(:file_queue, :key)
+#     Application.get_env(:job_queue, :key)
 #
 # You can also configure a 3rd-party app:
 #

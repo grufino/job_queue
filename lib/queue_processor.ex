@@ -1,7 +1,9 @@
 defmodule QueueProcessor do
   def process_queue() do
-    FolderHandler.readFolder()
-    |> Enum.map(&ContentHandler.list/1)
+    File.cwd!
+    |> fn project_path -> project_path <> "/input/*" end.()
+    |> FolderHandler.readFolder()
+    |> Enum.map(&ListContent.list/1)
     |> Enum.map(&CreateOrUpdateQueue.create_or_update_queue/1)
     |> Enum.map(&OrderJobs.order_jobs/1)
     |> Enum.map(&ProcessJobRequest.process/1)
