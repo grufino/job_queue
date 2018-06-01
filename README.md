@@ -25,6 +25,7 @@ Simple queue to get "jobs" executed and generate assigned jobs based on "agents"
 ## Execution
 
 - After installing, it is possible to run the given input file(s) by QueueProcessor module via Elixir CLI:
+
 `job_queue git:(master) iex -S mix`
 `Erlang/OTP 20 [erts-9.2.1] [source] [64-bit] [smp:4:4] [ds:4:4:10] [async-threads:10] [hipe] [kernel-poll:false] [dtrace]`
 
@@ -46,3 +47,5 @@ Simple queue to get "jobs" executed and generate assigned jobs based on "agents"
 `    "job_id" => "f26e890b-df8e-422e-a39c-7762aa0bac36"`
 `  }`
 `]`
+
+- This will run all files inside /job_queue/input and output results to /job_queue/output/job_queue_output_TIMESTAMP.txt
