@@ -6,5 +6,6 @@ defmodule WriteOutput do
         parsed_jobs = Poison.encode!(assigned_jobs)
 
         File.write(file_path, parsed_jobs, [:append])
+        assigned_jobs
     end
 end
